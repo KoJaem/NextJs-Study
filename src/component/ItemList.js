@@ -1,0 +1,24 @@
+import { Grid } from "semantic-ui-react";
+// css 모듈사용
+import styles from './ItemList.module.css';
+
+export default function ItemList({ list }) {
+  return (
+    <Grid columns={3}>
+      <Grid.Row>
+        {list.map((item, index) => (
+          <Grid.Column key={index}>
+            <div className={styles.wrap}>
+            <img src={item.image_link} alt={item.name} className={styles.img_item} />
+            <strong className={styles.tit_item}>{item.name}</strong>
+            <span className={styles.txt_info}>
+              {item.category} {item.product_type}
+            </span>
+            <strong className={styles.num_price}>${item.price}</strong>
+            </div>
+          </Grid.Column>
+        ))}
+      </Grid.Row>
+    </Grid>
+  );
+}
