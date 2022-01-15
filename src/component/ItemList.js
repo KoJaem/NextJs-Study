@@ -10,6 +10,8 @@ export default function ItemList({ list }) {
         {list.map((item, index) => (
           <Grid.Column key={index}>
             <Link href={`/view/${item.id}`}>
+
+              
             <a>
             <div className={styles.wrap}>
             <img src={item.image_link} alt={item.name} className={styles.img_item} />
