@@ -5,9 +5,20 @@ import Axios from 'axios';
 import Item from '../../src/component/Item';
 import { Loader } from "semantic-ui-react";
 import Head from 'next/head';
+import styled from "@emotion/styled";
 
 const Post = ({ item, name }) => {
+  const router = useRouter();
 
+  if(router.isFallback) {
+    return (
+      <LoadingWrapper>
+        <Loader active inline="centered">
+          Loading
+        </Loader>
+      </LoadingWrapper>
+    )
+  }
   return (
     <>
       {item && (
@@ -28,12 +39,20 @@ export default Post;
 
 // view/ [id].js 랑 다른 코드.
 export async function getStaticPaths() {
+    const apiUrl = process.env.apiUrl;
+    const res = await Axios.get(apiUrl);
+    const data = res.data;
   return {
-    paths: [
-      { params: { id: "740" } },
-      { params: { id: "730" } },
-      { params: { id: "729" } },
-    ],
+    // paths: [
+    //   { params: { id: "740" } },
+    //   { params: { id: "730" } },
+    //   { params: { id: "729" } },
+    // ],
+    paths: data.slice(0, 9).map(item => ({
+      params: {
+        id : item.id.toString(),
+      }
+    })),
     fallback: true,
     // fallback 값이 false 면 없는 페이지 처리를 해주지않음.
     // fallback 값이 true 면 없는 페이지 요청이 들어왔을때, 렌더링을 하고,
@@ -58,3 +77,7 @@ export async function getStaticProps(context) {
     }
   }
 }
+
+const LoadingWrapper = styled.div`
+  padding: 100px;
+`;
